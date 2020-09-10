@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Clients;
 use Illuminate\Http\Request;
 
-class ClientsController extends Controller
+class ClientController extends Controller
 {
     private $clientsModel;
 
@@ -40,7 +40,7 @@ class ClientsController extends Controller
     }
 
     public function destroy($id) {
-        $client = $this->clientsModel->find($id)->destroy();
+        $client = $this->clientsModel->find($id)->delete();
 
         return response()->json($client);
     }

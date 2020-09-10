@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+
 
 /**
  * Model de Cliente
@@ -28,7 +28,6 @@ use Illuminate\Support\Carbon;
 class Clients extends Model
 {
     use SoftDeletes;
-    use Notifiable;
 
     protected $table = 'clients';
 
@@ -45,18 +44,13 @@ class Clients extends Model
 
     protected $casts = [
         'id',
+        'birth_date'=>'Timestamp',
+        'updated_at'=>'Timestamp',
+        'deleted_at'=>'Timestamp',
+        'created_at'=>'Timestamp'
     ];
 
     protected $dates = [
         'birth_date',
     ];
-
-    protected $hidden = [
-        'updated_at',
-        'deleted_at',
-    ];
-
-    public function routeNotificationFor($driver, $notification = null) {
-        return $this->email;
-    }
 }
