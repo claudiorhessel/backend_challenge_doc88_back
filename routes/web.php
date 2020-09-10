@@ -14,3 +14,11 @@
 $router->get('/', function () use ($router) {
     return $router->app->version();
 });
+
+$router->group(['prefix' => '/api/client'], function() use ($router){
+    $router->get('/', "ClientController@getAll");
+    $router->get('/{id}', "ClientController@get");
+    $router->post('/', "ClientController@store");
+    $router->put('/{id}', "ClientController@update");
+    $router->delete('/{id}', "ClientController@destroy");
+});
