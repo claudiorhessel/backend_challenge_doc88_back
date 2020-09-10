@@ -25,7 +25,7 @@ use Illuminate\Support\Carbon;
  *
  * @package App\Models
  */
-class Clients extends Model
+class Client extends Model
 {
     use SoftDeletes;
 

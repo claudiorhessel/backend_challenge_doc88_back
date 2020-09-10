@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Clients;
+use App\Models\Client;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,7 +13,7 @@ class ClientController extends Controller
 {
     private $clientsModel;
 
-    public function __construct(Clients $clientsModel)
+    public function __construct(Client $clientsModel)
     {
         $this->clientsModel = $clientsModel;
     }

@@ -23,7 +23,7 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 
-$factory->define(Clients::class, function (Faker $faker) {
+$factory->define(Client::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => preg_replace('/@example\..*/', '@domain.com', $faker->unique()->safeEmail),
