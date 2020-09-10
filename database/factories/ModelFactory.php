@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\User;
+use App\{User, Models\Clients};
 use Faker\Generator as Faker;
 
 /*
@@ -20,5 +20,18 @@ $factory->define(User::class, function (Faker $faker) {
     return [
         'name' => $faker->name,
         'email' => $faker->email,
+    ];
+});
+
+$factory->define(Clients::class, function (Faker $faker) {
+    return [
+        'name' => $faker->name,
+        'email' => preg_replace('/@example\..*/', '@domain.com', $faker->unique()->safeEmail),
+        'phone' => $faker->randomNumber(9),
+        'birth_date' => $faker->date,
+        'address' => $faker->email,
+        'complement' => $faker->text(10),
+        'neighborhood' => $faker->text(10),
+        'cep' => $faker->randomNumber(9),
     ];
 });
