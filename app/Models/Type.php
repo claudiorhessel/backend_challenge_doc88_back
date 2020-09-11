@@ -40,4 +40,9 @@ class Type extends Model
         'deleted_at'=>'Timestamp',
         'created_at'=>'Timestamp'
     ];
+
+    public function product()
+    {
+        return $this->hasMany('App\Models\Product');
+    }
 }

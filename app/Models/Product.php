@@ -30,8 +30,7 @@ class Product extends Model
     protected $fillable = [
         'name',
         'price',
-        'photo',
-        'type_id'
+        'photo'
     ];
 
     protected $casts = [
@@ -47,4 +46,12 @@ class Product extends Model
         'deleted_at'=>'Timestamp',
         'created_at'=>'Timestamp'
     ];
+
+    /**
+     * Get the type record associated with the product.
+     */
+    public function type()
+    {
+        return $this->belongsTo('App\Models\Type');
+    }
 }

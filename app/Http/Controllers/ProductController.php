@@ -20,7 +20,9 @@ class ProductController extends Controller
 
     public function getAll() {
         try {
-            $products = $this->productsModel->all();
+            $products = $this->productsModel
+                             ->all()
+                             ->type;
             if($products && count($products) > 0) {
                 return response()->json($products, Response::HTTP_OK);
             } else {
@@ -33,13 +35,17 @@ class ProductController extends Controller
 
     public function get($id) {
         try {
-            $product = $this->productsModel->find($id);
+            $product = $this->productsModel
+                            ->select('products.*','types.name as type_name')
+                            ->leftJoin('types', 'types.id', '=', 'products.type_id')
+                            ->find($id);
             if($product) {
                 return response()->json($product, Response::HTTP_OK);
             } else {
                 return response()->json(null, Response::HTTP_OK);
             }
         } catch(QueryException $e) {
+            dd($e);
             return response()->json(['error' => 'Erro de conexão com o banco de dados'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
