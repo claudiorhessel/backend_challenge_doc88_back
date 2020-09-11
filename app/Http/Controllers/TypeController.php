@@ -54,20 +54,9 @@ class TypeController extends Controller
             return response()->json($validator->errors(), Response::HTTP_BAD_REQUEST);
         } else {
             try {
-                if ($request->hasFile('photo')) {
-                    $photo = $request->file('photo');
-                    $photoName = $photo->getClientOriginalName();
-                    $destinationPath = rtrim(app()->basePath('public/images'));
-                    $photo->move($destinationPath, $photoName);
+                $type = $this->typesModel->create($request->all());
 
-                    $requestData = $request->all();
-                    $requestData['photo'] = $photoName;
-                    $type = $this->typesModel->create($requestData);
-
-                    return response()->json($type, Response::HTTP_CREATED);
-                } else {
-                    return response()->json(['error' => 'Erro com a foto.'], Response::HTTP_BAD_REQUEST);
-                }
+                return response()->json($type, Response::HTTP_CREATED);
             } catch(QueryException $e) {
                 return response()->json(['error' => 'Erro de conexão com o banco de dados'],
                                 Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -85,21 +74,11 @@ class TypeController extends Controller
             return response()->json($validator->errors(), Response::HTTP_BAD_REQUEST);
         } else {
             try {
-                if ($request->hasFile('photo')) {
-                    $photo = $request->file('photo');
-                    $photoName = $photo->getClientOriginalName();
-                    $destinationPath = rtrim(app()->basePath('public/images'));
-                    $photo->move($destinationPath, $photoName);
+                $type = $this->typesModel
+                             ->find($id)
+                             ->update($request->all());
 
-                    $requestData = $request->all();
-                    $requestData['photo'] = $photoName;
-                    $type = $this->typesModel->find($id)
-                        ->update($requestData);
-
-                    return response()->json($type, Response::HTTP_CREATED);
-                } else {
-                    return response()->json(['error' => 'Erro com a foto.'], Response::HTTP_BAD_REQUEST);
-                }
+                return response()->json($type, Response::HTTP_CREATED);
             } catch(QueryException $e) {
                 return response()->json(['error' => 'Erro de conexão com o banco de dados'],
                                 Response::HTTP_INTERNAL_SERVER_ERROR);
