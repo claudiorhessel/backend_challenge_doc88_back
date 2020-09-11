@@ -14,4 +14,8 @@ class ValidationClient
         'neighborhood' => 'required|max:50',
         'cep' => 'required|max:8|integer'
     ];
+
+    const MESSAGE_CLIENT = [
+        'name.required' => 'O "NOME" é obrigatório'
+    ];
 }
