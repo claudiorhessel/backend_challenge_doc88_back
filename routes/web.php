@@ -23,14 +23,6 @@ $router->group(['prefix' => '/api/v1/client'], function() use ($router) {
     $router->delete('/{id}', "ClientController@destroy");
 });
 
-$router->group(['prefix' => '/api/v1/pastel'], function() use ($router) {
-    $router->get('/', "PastelController@getAll");
-    $router->get('/{id}', "PastelController@get");
-    $router->post('/', "PastelController@store");
-    $router->put('/{id}', "PastelController@update");
-    $router->delete('/{id}', "PastelController@destroy");
-});
-
 $router->group(['prefix' => '/api/v1/product'], function() use ($router) {
     $router->get('/', "ProductController@getAll");
     $router->get('/{id}', "ProductController@get");
