@@ -6,6 +6,7 @@
     "type": "project",
     "require": {
         "php": "^7.2.5",
+        "illuminate/mail": "~7.28.1",
         "laravel/lumen-framework": "^7.0",
         "swiftmailer/swiftmailer": "6.0"
     },

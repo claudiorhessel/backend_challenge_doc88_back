@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Validator;
 use App\Models\ValidationOrder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderShipped;
 
 class OrderController extends Controller
 {
@@ -47,6 +49,12 @@ class OrderController extends Controller
     }
 
     public function get($id) {
+        /*$data = [];
+        Mail::send('email.credentials', $data, function($message)
+        {
+            $message->to('claudiorhessel@gmail.com', 'Jon Doe')->subject('Welcome!');
+        });*/
+        Mail::raw('Raw string email', function($msg) { $msg->to(['claudiorhessel@gmail.com']); $msg->from(['claudiorhessel@gmail.com']); });
         try {
             /*$order = OrderProduct::with('product')
                           ->with('order')
