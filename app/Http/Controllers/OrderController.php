@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\ValidationOrder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Database\Eloquent\Builder;
 
 class OrderController extends Controller
 {
@@ -24,12 +25,91 @@ class OrderController extends Controller
         DB::enableQueryLog();
     }
 
-    public function getAll() {
+    public function getAll(Request $request) {
+        $filters = $request->all();
+
+        $where = array();
+
+        $productId = null;
+        $productName = null;
+        $productType = null;
+
+        $clientId = null;
+        $clientName = null;
+        $clientEmail = null;
+
+        $orderBy = 'id';
+        $position = 'asc';
+        $perPage = '15';
+
+        if(count($filters) > 0) {
+            foreach($filters as $key => $value) {
+                switch($key) {
+                    case 'order_id':
+                        $where[] = ['id', '=', $value];
+                        break;
+
+                    case 'product_id':
+                        $productId = $value;
+                        break;
+                    case 'product_name':
+                        $productName = '%'.$value.'%';
+                        break;
+                    case 'product_type':
+                        $productType = '%'.$value.'%';
+                        break;
+
+                    case 'client_id':
+                        $clientId = ['id', '=', $value];
+                        break;
+                    case 'client_name':
+                        $clientName = '%'.$value.'%';
+                        break;
+                    case 'client_email':
+                        $clientEmail = '%'.$value.'%';
+                        break;
+
+                    case 'order_by':
+                        $orderBy = $value;
+                        break;
+                    case 'position':
+                        $position = $value;
+                        break;
+                    case 'per_page':
+                        $perPage = $value;
+                        break;
+                }
+            }
+        }
+
         try {
             $orders = $this->ordersModel
-                          ->with('client')
-                          ->with('orderProduct.product.type')
-                          ->get();
+                            ->withTrashed()
+                            ->with('client')
+                            ->whereHas('client', function (Builder $query) use($clientId, $clientName, $clientEmail) {
+                                $query->withTrashed();
+                                if($clientId)
+                                    $query->where('id', '=', $clientId);
+                                if($clientName)
+                                    $query->where('name', 'like', $clientName);
+                                if($clientEmail)
+                                    $query->where('name', 'like', $clientEmail);
+                            })
+                            ->with('orderProduct.product.type')
+                            ->whereHas('orderProduct.product', function (Builder $query) use($productId, $productName) {
+                                $query->withTrashed();
+                                if($productId)
+                                    $query->where('id', '=', $productId);
+                                if($productName)
+                                    $query->where('name', 'like', $productName);
+                            })
+                            ->whereHas('orderProduct.product.type', function (Builder $query) use($productType) {
+                                $query->withTrashed();
+                                if($productType)
+                                    $query->where('name', 'like', $productType);
+                            })
+                            ->orderBy($orderBy, $position)
+                            ->simplePaginate($perPage);
 
             if($orders && count($orders) > 0) {
                 return response()->json($orders, Response::HTTP_OK);
@@ -37,7 +117,7 @@ class OrderController extends Controller
                 return response()->json([], Response::HTTP_OK);
             }
         } catch(QueryException $e) {
-            return response()->json(['error' => 'Erro de conexão com o banco de dados'], Response::HTTP_INTERNAL_SERVER_ERROR);
+            return response()->json(['error' => 'Erro de conexão com o banco de dados', 'message' => $e], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
 
