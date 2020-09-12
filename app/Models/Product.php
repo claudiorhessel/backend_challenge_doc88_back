@@ -52,14 +52,15 @@ class Product extends Model
      */
     public function type()
     {
-        return $this->hasOne('App\Models\Type');
+        return $this->belongsTo('App\Models\Type');
     }
 
     /**
-     * Get the type record associated with the product.
+     * Get the order record associated with the product.
      */
     public function order()
     {
-        return $this->belongsTo('App\Models\Order');
+        return $this->belongsToMany('App\Models\Order')
+                    ->using('App\Models\OrderProduct');
     }
 }

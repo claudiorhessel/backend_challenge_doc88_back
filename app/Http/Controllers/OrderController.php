@@ -11,32 +11,25 @@ use Illuminate\Support\Facades\Validator;
 use App\Models\ValidationOrder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\OrderShipped;
 
 class OrderController extends Controller
 {
     private $ordersModel;
+    private $orderProductModel;
 
-    public function __construct(Order $ordersModel)
+    public function __construct(Order $ordersModel, OrderProduct $orderProductModel)
     {
         $this->ordersModel = $ordersModel;
+        $this->orderProductModel = $orderProductModel;
         DB::enableQueryLog();
     }
 
     public function getAll() {
         try {
             $orders = $this->ordersModel
-                           ->select(
-                               'orders.*',
-                               'products.*',
-                               'types.name as type_name',
-                               'clients.name as client_name'
-                            )
-                           ->leftJoin('clients', 'clients.id', '=', 'orders.client_id')
-                           ->leftJoin('order_products', 'order_products.order_id', '=', 'orders.id')
-                           ->leftJoin('products', 'products.id', '=', 'order_products.product_id')
-                           ->leftJoin('types', 'types.id', '=', 'products.type_id')
-                           ->get();
+                          ->with('client')
+                          ->with('orderProduct.product.type')
+                          ->get();
 
             if($orders && count($orders) > 0) {
                 return response()->json($orders, Response::HTTP_OK);
@@ -49,28 +42,26 @@ class OrderController extends Controller
     }
 
     public function get($id) {
-        /*$data = [];
-        Mail::send('email.credentials', $data, function($message)
-        {
-            $message->to('claudiorhessel@gmail.com', 'Jon Doe')->subject('Welcome!');
-        });*/
-        Mail::raw('Raw string email', function($msg) { $msg->to(['claudiorhessel@gmail.com']); $msg->from(['claudiorhessel@gmail.com']); });
-        try {
-            /*$order = OrderProduct::with('product')
-                          ->with('order')
-                          ->with('orderClient')
-                          ->where('order_id', '=', (int)$id)
-                          ->get();*/
+        $validator = Validator::make(
+            array("id" => $id),
+            ValidationOrder::RULE_ORDER_GET,
+            ValidationOrder::MESSAGE_ORDER_GET
+        );
 
+        if($validator->fails()) {
+            return response()->json(['error' => 'Erro no formato/tipo dos dados enviados.','messages' => $validator->errors()], Response::HTTP_NOT_ACCEPTABLE);
+        }
+
+        try {
             $order = $this->ordersModel
                           ->with('client')
-                          ->with('productOrder')
+                          ->with('orderProduct.product.type')
                           ->where('id', '=', (int)$id)
-                          ->get();
+                          ->first();
             if($order) {
                 return response()->json($order, Response::HTTP_OK);
             } else {
-                return response()->json(null, Response::HTTP_OK);
+                return response()->json(['error' => 'Pedido não encotrado.'], Response::HTTP_OK);
             }
         } catch(QueryException $e) {
             dd($e);
@@ -88,20 +79,20 @@ class OrderController extends Controller
             return response()->json($validator->errors(), Response::HTTP_BAD_REQUEST);
         } else {
             try {
-                if ($request->hasFile('photo')) {
-                    $photo = $request->file('photo');
-                    $photoName = $photo->getClientOriginalName();
-                    $destinationPath = rtrim(app()->basePath('public/images'));
-                    $photo->move($destinationPath, $photoName);
-
-                    $requestData = $request->all();
-                    $requestData['photo'] = $photoName;
-                    $order = $this->ordersModel->create($requestData);
-
-                    return response()->json($order, Response::HTTP_CREATED);
-                } else {
-                    return response()->json(['error' => 'Erro com a foto.'], Response::HTTP_BAD_REQUEST);
+                $order = $this->ordersModel->create($request->all());
+                if($order) {
+                    $products = $request->all()['products'];
+                    foreach($products as $product) {
+                        $product['order_id'] = $order->id;
+                        $this->orderProductModel->create($product);
+                    }
                 }
+                $orderCreated = $this->ordersModel
+                              ->with('client')
+                              ->with('orderProduct.product.type')
+                              ->find($order->id);
+                $this->newOrderMail($orderCreated);
+                return response()->json($order, Response::HTTP_CREATED);
             } catch(QueryException $e) {
                 return response()->json(['error' => 'Erro de conexão com o banco de dados'],
                                 Response::HTTP_INTERNAL_SERVER_ERROR);
@@ -110,44 +101,29 @@ class OrderController extends Controller
     }
 
     public function update($id, Request $request) {
-        $validator = Validator::make(
-            $request->all(),
-            ValidationOrder::RULE_ORDER
-        );
-
-        if($validator->fails()) {
-            return response()->json($validator->errors(), Response::HTTP_BAD_REQUEST);
-        } else {
-            try {
-                if ($request->hasFile('photo')) {
-                    $photo = $request->file('photo');
-                    $photoName = $photo->getClientOriginalName();
-                    $destinationPath = rtrim(app()->basePath('public/images'));
-                    $photo->move($destinationPath, $photoName);
-
-                    $requestData = $request->all();
-                    $requestData['photo'] = $photoName;
-                    $order = $this->ordersModel->find($id)
-                        ->update($requestData);
-
-                    return response()->json($order, Response::HTTP_CREATED);
-                } else {
-                    return response()->json(['error' => 'Erro com a foto.'], Response::HTTP_BAD_REQUEST);
-                }
-            } catch(QueryException $e) {
-                return response()->json(['error' => 'Erro de conexão com o banco de dados'],
-                                Response::HTTP_INTERNAL_SERVER_ERROR);
-            }
-        }
+        return response()->json(['error' => 'Alterações no pedido não são autorizadas, você deve cancelá-lo e efetuar um novo pedido.'], Response::HTTP_NOT_FOUND);
     }
 
     public function destroy($id) {
         try {
             $order = $this->ordersModel->find($id)->delete();
 
-            return response()->json(null, Response::HTTP_OK);
+            return response()->json(['success' => 'Pedido cancelado.'], Response::HTTP_OK);
         } catch(QueryException $e) {
             return response()->json(['error' => 'Erro de conexão com o banco de dados'], Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+    }
+
+    public function newOrderMail($order)
+    {
+        $data = array('name' => $order->client->name, 'order' => $order);
+
+        Mail::send('orders/mail', $data, function($message) use ($order) {
+            $message->to( $order->client->email, $order->client->name)
+                    ->subject('Novo pedido efetuado: #' . $order->id);
+            $message->from(env('MAIL_FROM_ADDRESS'),env('MAIL_FROM_NAME'));
+        });
+
+        return true;
     }
 }

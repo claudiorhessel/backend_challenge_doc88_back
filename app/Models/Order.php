@@ -43,7 +43,7 @@ class Order extends Model
     ];
 
     /**
-     * Get the type record associated with the product.
+     * Get the client record associated with the order.
      */
     public function client()
     {
@@ -51,7 +51,7 @@ class Order extends Model
     }
 
     /**
-     * Get the type record associated with the product.
+     * Get the order_products record associated with the order.
      */
     public function orderProduct()
     {
@@ -59,17 +59,14 @@ class Order extends Model
     }
 
     /**
-     * Get all of the products for the order.
+     * Get the product record associated with the order.
      */
-    public function productOrder()
+    public function product()
     {
-        return $this->hasManyThrough(
-            'App\Models\Product',
-            'App\Models\OrderProduct',
-            'order_id',
-            'id',
-            'id',
-            'product_id'
-        );
+        return $this->belongsToMany('App\Models\Product')
+                    ->using('App\Models\OrderProduct')
+                    ->withPivot([
+                        'product_qtd',
+                    ]);
     }
 }

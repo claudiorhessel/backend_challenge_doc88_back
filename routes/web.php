@@ -54,3 +54,10 @@ $router->group(['prefix' => '/api/v1/order'], function() use ($router) {
     $router->put('/{id}', "OrderController@update");
     $router->delete('/{id}', "OrderController@destroy");
 });
+
+$router->get('/{any:.*}', "HomeController@notFound");
+$router->post('/{any:.*}', "HomeController@notFound");
+$router->put('/{any:.*}', "HomeController@notFound");
+$router->delete('/{any:.*}', "HomeController@notFound");
+$router->patch('/{any:.*}', "HomeController@notFound");
+$router->options('/{any:.*}', "HomeController@notFound");
