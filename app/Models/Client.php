@@ -53,4 +53,12 @@ class Client extends Model
     protected $dates = [
         'birth_date',
     ];
+
+    /**
+     * Get the order record associated with the client.
+     */
+    public function order()
+    {
+        return $this->hasMany('App\Models\Order');
+    }
 }

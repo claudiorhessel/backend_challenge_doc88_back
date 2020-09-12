@@ -8,34 +8,29 @@ use Illuminate\Support\Carbon;
 
 
 /**
- * Product Model
+ * Order Model
  *
  * @property int         $id
- * @property string      $name
- * @property decimal     $price
- * @property string      $photo
- * @property int         $type_id
+ * @property int         $client_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
  *
  * @package App\Models
  */
-class Product extends Model
+class Order extends Model
 {
     use SoftDeletes;
 
-    protected $table = 'products';
+    protected $table = 'orders';
 
     protected $fillable = [
-        'name',
-        'price',
-        'photo'
+        'client_id'
     ];
 
     protected $casts = [
         'id',
-        'type_id',
+        'client_id',
         'updated_at'=>'Timestamp',
         'deleted_at'=>'Timestamp',
         'created_at'=>'Timestamp'
@@ -50,16 +45,31 @@ class Product extends Model
     /**
      * Get the type record associated with the product.
      */
-    public function type()
+    public function client()
     {
-        return $this->hasOne('App\Models\Type');
+        return $this->belongsTo(Client::class);
     }
 
     /**
      * Get the type record associated with the product.
      */
-    public function order()
+    public function orderProduct()
     {
-        return $this->belongsTo('App\Models\Order');
+        return $this->hasMany(OrderProduct::class);
+    }
+
+    /**
+     * Get all of the products for the order.
+     */
+    public function productOrder()
+    {
+        return $this->hasManyThrough(
+            'App\Models\Product',
+            'App\Models\OrderProduct',
+            'order_id',
+            'id',
+            'id',
+            'product_id'
+        );
     }
 }
