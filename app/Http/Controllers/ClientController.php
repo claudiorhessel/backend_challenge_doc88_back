@@ -18,7 +18,8 @@ class ClientController extends Controller
         $this->clientsModel = $clientsModel;
     }
 
-    public function getAll(Request $request) {
+    public function getAll(Request $request)
+    {
         $filters = $request->all();
         $where = array();
         $orderBy = 'id';
@@ -67,7 +68,8 @@ class ClientController extends Controller
         }
     }
 
-    public function getById($id) {
+    public function getById($id)
+    {
         try {
             $client = $this->clientsModel->find($id);
             if($client && count($client) > 0) {
@@ -80,7 +82,8 @@ class ClientController extends Controller
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $validator = Validator::make(
             $request->all(),
             ValidationClient::RULE_CLIENT,
@@ -100,7 +103,8 @@ class ClientController extends Controller
         }
     }
 
-    public function update($id, Request $request) {
+    public function update($id, Request $request)
+    {
         try {
             $client = $this->clientsModel->find($id)
                 ->update($request->all());
@@ -111,7 +115,8 @@ class ClientController extends Controller
         }
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         try {
             $client = $this->clientsModel->find($id)->delete();
 

@@ -18,7 +18,8 @@ class ProductController extends Controller
         $this->productsModel = $productsModel;
     }
 
-    public function getAll() {
+    public function getAll()
+    {
         try {
             $products = $this->productsModel
                              ->all()
@@ -33,7 +34,8 @@ class ProductController extends Controller
         }
     }
 
-    public function get($id) {
+    public function get($id)
+    {
         try {
             $product = $this->productsModel
                             ->select('products.*','types.name as type_name')
@@ -50,7 +52,8 @@ class ProductController extends Controller
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $validator = Validator::make(
             $request->all(),
             ValidationProduct::RULE_PRODUCT
@@ -81,7 +84,8 @@ class ProductController extends Controller
         }
     }
 
-    public function update($id, Request $request) {
+    public function update($id, Request $request)
+    {
         $validator = Validator::make(
             $request->all(),
             ValidationProduct::RULE_PRODUCT_UPDATE
@@ -113,7 +117,8 @@ class ProductController extends Controller
         }
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         try {
             $product = $this->productsModel->find($id)->delete();
 

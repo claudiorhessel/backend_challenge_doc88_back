@@ -18,7 +18,8 @@ class TypeController extends Controller
         $this->typesModel = $typesModel;
     }
 
-    public function getAll() {
+    public function getAll()
+    {
         try {
             $types = $this->typesModel->all();
             if($types && count($types) > 0) {
@@ -31,7 +32,8 @@ class TypeController extends Controller
         }
     }
 
-    public function get($id) {
+    public function get($id)
+    {
         try {
             $type = $this->typesModel->find($id);
             if($type) {
@@ -44,7 +46,8 @@ class TypeController extends Controller
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $validator = Validator::make(
             $request->all(),
             ValidationType::RULE_TYPE
@@ -64,7 +67,8 @@ class TypeController extends Controller
         }
     }
 
-    public function update($id, Request $request) {
+    public function update($id, Request $request)
+    {
         $validator = Validator::make(
             $request->all(),
             ValidationType::RULE_TYPE_UPDATE
@@ -86,7 +90,8 @@ class TypeController extends Controller
         }
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         try {
             $type = $this->typesModel->find($id)->delete();
 

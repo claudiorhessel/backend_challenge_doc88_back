@@ -25,7 +25,8 @@ class OrderController extends Controller
         DB::enableQueryLog();
     }
 
-    public function getAll(Request $request) {
+    public function getAll(Request $request)
+    {
         $filters = $request->all();
 
         $where = array();
@@ -121,7 +122,8 @@ class OrderController extends Controller
         }
     }
 
-    public function get($id) {
+    public function get($id)
+    {
         $validator = Validator::make(
             array("id" => $id),
             ValidationOrder::RULE_ORDER_GET,
@@ -149,7 +151,8 @@ class OrderController extends Controller
         }
     }
 
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
         $validator = Validator::make(
             $request->all(),
             ValidationOrder::RULE_ORDER
@@ -180,11 +183,13 @@ class OrderController extends Controller
         }
     }
 
-    public function update($id, Request $request) {
+    public function update($id, Request $request)
+    {
         return response()->json(['error' => 'Alterações no pedido não são autorizadas, você deve cancelá-lo e efetuar um novo pedido.'], Response::HTTP_NOT_FOUND);
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+    {
         try {
             $order = $this->ordersModel->find($id)->delete();
 
