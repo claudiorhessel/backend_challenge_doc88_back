@@ -42,7 +42,7 @@ $router->group(['prefix' => '/api/v1/product'], function() use ($router) {
 $router->group(['prefix' => '/api/v1/type'], function() use ($router) {
     $router->get('/', "TypeController@getPagination");
     $router->get('/all', "TypeController@getAll");
-    $router->get('/{id}', "TypeController@get");
+    $router->get('/{id}', "TypeController@getById");
     $router->post('/', "TypeController@store");
     $router->put('/{id}', "TypeController@update");
     $router->delete('/{id}', "TypeController@destroy");
@@ -51,7 +51,7 @@ $router->group(['prefix' => '/api/v1/type'], function() use ($router) {
 $router->group(['prefix' => '/api/v1/order'], function() use ($router) {
     $router->get('/', "OrderController@getPagination");
     $router->get('/all', "OrderController@getAll");
-    $router->get('/{id}', "OrderController@get");
+    $router->get('/{id}', "OrderController@getById");
     $router->post('/', "OrderController@store");
     $router->put('/{id}', "OrderController@update");
     $router->delete('/{id}', "OrderController@destroy");

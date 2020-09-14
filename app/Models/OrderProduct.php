@@ -50,7 +50,7 @@ class OrderProduct extends Pivot
      */
     public function order()
     {
-        return $this->belongsTo('App\Models\Order');
+        return $this->belongsTo('App\Models\Order')->withTrashed();
     }
 
     /**
@@ -58,6 +58,6 @@ class OrderProduct extends Pivot
      */
     public function product()
     {
-        return $this->belongsTo('App\Models\Product');
+        return $this->belongsTo('App\Models\Product')->withTrashed();
     }
 }

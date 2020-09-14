@@ -47,7 +47,7 @@ class Order extends Model
      */
     public function client()
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Client::class)->withTrashed();;
     }
 
     /**
@@ -67,6 +67,7 @@ class Order extends Model
                     ->using('App\Models\OrderProduct')
                     ->withPivot([
                         'product_qtd',
-                    ]);
+                    ])
+                    ->withTrashed();
     }
 }

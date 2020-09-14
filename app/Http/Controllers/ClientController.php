@@ -328,7 +328,10 @@ class ClientController extends Controller
             }
         } catch (QueryException $e) {
             return response()->json(
-                ['error' => 'Erro de conexão com o banco de dados'],
+                [
+                    'error' => 'Erro de conexão com o banco de dados',
+                    'message' => $e
+                ],
                 array('status'=> Response::HTTP_INTERNAL_SERVER_ERROR)
             );
         } catch (\Exception $e) {
@@ -398,9 +401,12 @@ class ClientController extends Controller
                     Response::HTTP_OK
                 );
             }
-        } catch(QueryException $e) {
+        } catch (QueryException $e) {
             return response()->json(
-                ['error' => 'Erro de conexão com o banco de dados'],
+                [
+                    'error' => 'Erro de conexão com o banco de dados',
+                    'message' => $e
+                ],
                 array('status'=> Response::HTTP_INTERNAL_SERVER_ERROR)
             );
         } catch (\Exception $e) {
@@ -536,7 +542,10 @@ class ClientController extends Controller
             return response()->json($client, Response::HTTP_CREATED);
         } catch(QueryException $e) {
             return response()->json(
-                ['error' => 'Erro de conexão com o banco de dados'],
+                [
+                    'error' => 'Erro de conexão com o banco de dados',
+                    'message' => $e
+                ],
                 array('status'=> Response::HTTP_INTERNAL_SERVER_ERROR)
             );
         } catch (\Exception $e) {

@@ -457,6 +457,257 @@
                 }
             }
         },
+        "/v1/order": {
+            "get": {
+                "summary": "Paginação para lista de pedidos",
+                "operationId": "App\\Http\\Controllers\\OrderController::getPagination",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "header",
+                        "description": "Página a ser exibida",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "header",
+                        "description": "Quantidade de itens por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "15"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "header",
+                        "description": "Campo para ordenação da pesquisa de clientes",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "id"
+                        },
+                        "example": "cep"
+                    },
+                    {
+                        "name": "order",
+                        "in": "header",
+                        "description": "Ordenação da pesquisa asc ou desc",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "asc",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        },
+                        "example": "asc"
+                    },
+                    {
+                        "name": "order_id",
+                        "in": "header",
+                        "description": "Valor para o campo 'order_id'.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "product_id",
+                        "in": "header",
+                        "description": "Valor para o campo 'product_id'.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "product_name",
+                        "in": "header",
+                        "description": "Valor para o campo 'product_name', pesquisa do tipo 'like'",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Fulado"
+                    },
+                    {
+                        "name": "product_type",
+                        "in": "header",
+                        "description": "Valor para o campo 'product_type', pesquisa do tipo 'like'",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Fulado"
+                    },
+                    {
+                        "name": "client_id",
+                        "in": "header",
+                        "description": "Valor para o campo 'client_id'.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "client_name",
+                        "in": "header",
+                        "description": "Valor para o campo 'client_name', pesquisa do tipo 'like'",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Fulado"
+                    },
+                    {
+                        "name": "client_email",
+                        "in": "header",
+                        "description": "Valor para o campo 'client_email', pesquisa do tipo 'like'",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "teste@teste.com"
+                    },
+                    {
+                        "name": "show_deleted",
+                        "in": "header",
+                        "description": "Exibir (1) ou não (0) os dados deletados",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "0",
+                            "enum": [
+                                "0",
+                                "1"
+                            ]
+                        },
+                        "example": "0"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list with clients"
+                    },
+                    "406": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "500": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Insere um novo pedido",
+                "operationId": "App\\Http\\Controllers\\OrderController::store",
+                "parameters": [
+                    {
+                        "name": "client_id",
+                        "in": "header",
+                        "description": "Valor para o campo 'client_id'",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "product",
+                        "in": "header",
+                        "description": "Valor para o campo 'email'",
+                        "required": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "integer",
+                                "example": "{product_id: 1, product_qtd:20}"
+                            }
+                        },
+                        "example": "teste@teste.com"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Novo cliente registrado com sucesso"
+                    },
+                    "406": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/v1/order/all": {
+            "get": {
+                "summary": "Exibe todos os registros, exceto deletados",
+                "operationId": "App\\Http\\Controllers\\OrderController::getAll",
+                "responses": {
+                    "200": {
+                        "description": "Lista de Pedidos"
+                    },
+                    "500": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/v1/order/{id}": {
+            "get": {
+                "summary": "Exibe um pedido ativo pelo {id}",
+                "operationId": "App\\Http\\Controllers\\OrderController::getById",
+                "parameters": [
+                    {
+                        "name": "show_deleted",
+                        "in": "header",
+                        "description": "{id} do pedido a ser localizado.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "0"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados do pedido solicitado"
+                    },
+                    "500": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Alterações no pedido não são autorizadas, você deve cancelá-lo e efetuar um novo pedido.",
+                "operationId": "App\\Http\\Controllers\\OrderController::update",
+                "responses": {
+                    "404": {
+                        "description": "Alterações no pedido não são autorizadas, você deve cancelá-lo e efetuar um novo pedido."
+                    }
+                }
+            }
+        },
         "/v1/product": {
             "get": {
                 "summary": "Paginação para lista de produtos.",
