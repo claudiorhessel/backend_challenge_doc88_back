@@ -272,7 +272,12 @@ class ClientController extends Controller
             if($clients && count($clients) > 0) {
                 return response()->json($clients, Response::HTTP_OK);
             } else {
-                return response()->json([], Response::HTTP_OK);
+                return response()->json(
+                    [
+                        'message' => 'Nenhum registro encontrado'
+                    ],
+                    Response::HTTP_OK
+                );
             }
         } catch (QueryException $e) {
             return response()->json(
@@ -287,13 +292,6 @@ class ClientController extends Controller
                 [
                     'error' => 'Erro interno do servidor.',
                     'message' => $e->getMessage()
-                ],
-                Response::HTTP_INTERNAL_SERVER_ERROR
-            );
-        } finally {
-            return response()->json(
-                [
-                    'error' => 'Erro interno do servidor.'
                 ],
                 Response::HTTP_INTERNAL_SERVER_ERROR
             );
@@ -461,7 +459,7 @@ class ClientController extends Controller
      *     )
      *   ),
      *   @OA\Parameter(
-     *     name="complement",
+     *     name="neighborhood",
      *     description="Valor para o campo 'neighborhood' (bairro)",
      *     in="header",
      *     required=true,

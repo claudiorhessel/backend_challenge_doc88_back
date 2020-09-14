@@ -34,9 +34,9 @@ class OrderProduct extends Pivot
         'id',
         'order_id',
         'product_id',
-        'updated_at'=>'Timestamp',
-        'deleted_at'=>'Timestamp',
-        'created_at'=>'Timestamp'
+        'updated_at'=>'datetime:Y-m-d H:i:s',
+        'deleted_at'=>'datetime:Y-m-d H:i:s',
+        'created_at'=>'datetime:Y-m-d H:i:s'
     ];
 
     protected $dates = [

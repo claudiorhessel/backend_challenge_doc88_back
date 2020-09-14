@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-class ValidationProduct
+class ValidationOrderProduct
 {
     const RULE_ORDER_PRODUCT = [
         'order_id' => 'required',

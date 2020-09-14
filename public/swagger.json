@@ -224,7 +224,7 @@
                         "example": "Ap 25"
                     },
                     {
-                        "name": "complement",
+                        "name": "neighborhood",
                         "in": "header",
                         "description": "Valor para o campo 'neighborhood' (bairro)",
                         "required": true,
@@ -430,7 +430,7 @@
                 }
             },
             "delete": {
-                "summary": "Delete um cliente pelo {id}",
+                "summary": "Deleta um cliente pelo {id}",
                 "operationId": "App\\Http\\Controllers\\ClientController::destroy",
                 "parameters": [
                     {
@@ -447,6 +447,328 @@
                 "responses": {
                     "200": {
                         "description": "Mensagem informando que o cliente foi deletado."
+                    },
+                    "500": {
+                        "description": "Erro no formato ou tipo dos dados enviados."
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            }
+        },
+        "/v1/product": {
+            "get": {
+                "summary": "Paginação para lista de produtos.",
+                "operationId": "App\\Http\\Controllers\\ProductController::getPagination",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "header",
+                        "description": "Página a ser exibida.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "header",
+                        "description": "Quantidade de itens por página.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "15"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "header",
+                        "description": "Campo para ordenação da pesquisa.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "id"
+                        },
+                        "example": "cep"
+                    },
+                    {
+                        "name": "order",
+                        "in": "header",
+                        "description": "Ordenação da pesquisa asc ou desc.",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "asc",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        },
+                        "example": "asc"
+                    },
+                    {
+                        "name": "id",
+                        "in": "header",
+                        "description": "Valor para o campo 'id'.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "name",
+                        "in": "header",
+                        "description": "Valor para o campo 'name', pesquisa do tipo 'like'.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Carne"
+                    },
+                    {
+                        "name": "price",
+                        "in": "header",
+                        "description": "Valor para o campo 'price', pesquisa do tipo 'like'.",
+                        "required": false,
+                        "schema": {
+                            "type": "decimal"
+                        },
+                        "example": "10.50"
+                    },
+                    {
+                        "name": "type_name",
+                        "in": "header",
+                        "description": "Valor para o campo 'type_name', pesquisa do tipo 'like'.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Pastel"
+                    },
+                    {
+                        "name": "show_deleted",
+                        "in": "header",
+                        "description": "Exibir (1) ou não (0) os dados deletados.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "0",
+                            "enum": [
+                                "0",
+                                "1"
+                            ]
+                        },
+                        "example": "0"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Lista de produtos com paginação."
+                    },
+                    "406": {
+                        "description": "Erro no formato ou tipo dos dados enviados."
+                    },
+                    "500": {
+                        "description": "Erro no formato ou tipo dos dados enviados."
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            },
+            "put": {
+                "summary": "Atualiza um produto",
+                "operationId": "App\\Http\\Controllers\\ProductController::update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "header",
+                        "description": "{id} do registro a ser atualizado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "name",
+                        "in": "header",
+                        "description": "Valor para o campo 'name'",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Pizza"
+                    },
+                    {
+                        "name": "price",
+                        "in": "header",
+                        "description": "Valor para o campo 'price'",
+                        "required": true,
+                        "schema": {
+                            "type": "decimal"
+                        },
+                        "example": "10.50"
+                    },
+                    {
+                        "name": "type_id",
+                        "in": "header",
+                        "description": "Valor para o campo 'type_id'",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "photo",
+                        "in": "header",
+                        "description": "Valor para o campo 'photo'",
+                        "required": true,
+                        "schema": {
+                            "type": "image"
+                        },
+                        "example": "image"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cliente atualizado com sucesso"
+                    },
+                    "406": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Insere um novo produto",
+                "operationId": "App\\Http\\Controllers\\ProductController::store",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "header",
+                        "description": "Valor para o campo 'name'",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Pizza"
+                    },
+                    {
+                        "name": "price",
+                        "in": "header",
+                        "description": "Valor para o campo 'price'",
+                        "required": true,
+                        "schema": {
+                            "type": "decimal"
+                        },
+                        "example": "10.50"
+                    },
+                    {
+                        "name": "type_id",
+                        "in": "header",
+                        "description": "Valor para o campo 'type_id'",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "photo",
+                        "in": "header",
+                        "description": "Valor para o campo 'photo'",
+                        "required": true,
+                        "schema": {
+                            "type": "image"
+                        },
+                        "example": "image"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Novo cliente registrado com sucesso"
+                    },
+                    "406": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/v1/product/all": {
+            "get": {
+                "summary": "Exibe todos os registros, exceto deletados",
+                "operationId": "App\\Http\\Controllers\\ProductController::getAll",
+                "responses": {
+                    "200": {
+                        "description": "Lista de produtos"
+                    },
+                    "500": {
+                        "description": "Erro de conexão com o banco de dados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/v1/product/{id}": {
+            "get": {
+                "summary": "Exibe um produto ativo pelo {id}",
+                "operationId": "App\\Http\\Controllers\\ProductController::getById",
+                "parameters": [
+                    {
+                        "name": "show_deleted",
+                        "in": "header",
+                        "description": "{id} do produto a ser localizado.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "0"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados do produto solicitado"
+                    },
+                    "500": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Deleta um produto pelo {id}",
+                "operationId": "App\\Http\\Controllers\\ProductController::destroy",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "header",
+                        "description": "{id} do produto a ser deletado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mensagem informando que o registro foi deletado."
                     },
                     "500": {
                         "description": "Erro no formato ou tipo dos dados enviados."

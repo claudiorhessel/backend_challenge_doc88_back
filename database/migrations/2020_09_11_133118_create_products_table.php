@@ -18,7 +18,9 @@ class CreateProductsTable extends Migration
 
             $table->string('name', 250);
             $table->decimal('price', 10, 2);
-            $table->string('photo', 250);
+            $table->string('photo_original_name', 250);
+            $table->string('photo_destination_path', 250);
+            $table->string('photo_name', 250);
 
             $table->foreignId('type_id')
                   ->constrained('types')

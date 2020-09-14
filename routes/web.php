@@ -33,7 +33,7 @@ $router->group(['prefix' => '/api/v1/client'], function() use ($router) {
 $router->group(['prefix' => '/api/v1/product'], function() use ($router) {
     $router->get('/', "ProductController@getPagination");
     $router->get('/all', "ProductController@getAll");
-    $router->get('/{id}', "ProductController@get");
+    $router->get('/{id}', "ProductController@getById");
     $router->post('/', "ProductController@store");
     $router->put('/{id}', "ProductController@update");
     $router->delete('/{id}', "ProductController@destroy");
