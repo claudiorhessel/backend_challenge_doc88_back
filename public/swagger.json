@@ -59,6 +59,16 @@
                         "example": "asc"
                     },
                     {
+                        "name": "ID",
+                        "in": "header",
+                        "description": "Valor para o campo 'ID'.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    },
+                    {
                         "name": "name",
                         "in": "header",
                         "description": "Valor para o campo 'name', pesquisa do tipo 'like'",
@@ -166,7 +176,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "A list with clients"
+                        "description": "Uma lista de clientes com paginação"
                     },
                     "406": {
                         "description": "Erro no formato ou tipo dos dados enviados"
@@ -326,16 +336,6 @@
                 "summary": "Atualiza os dados do cliente",
                 "operationId": "App\\Http\\Controllers\\ClientController::update",
                 "parameters": [
-                    {
-                        "name": "id",
-                        "in": "header",
-                        "description": "{id} do cliente a ser atualizado.",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        },
-                        "example": "0"
-                    },
                     {
                         "name": "name",
                         "in": "header",
@@ -706,6 +706,33 @@
                         "description": "Alterações no pedido não são autorizadas, você deve cancelá-lo e efetuar um novo pedido."
                     }
                 }
+            },
+            "delete": {
+                "summary": "Deleta um pedido pelo {id}",
+                "operationId": "App\\Http\\Controllers\\OrderController::destroy",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "header",
+                        "description": "{id} do pedido a ser deletado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mensagem informando que o pedido foi deletado."
+                    },
+                    "500": {
+                        "description": "Erro no formato ou tipo dos dados enviados."
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
             }
         },
         "/v1/product": {
@@ -1020,6 +1047,238 @@
                 "responses": {
                     "200": {
                         "description": "Mensagem informando que o registro foi deletado."
+                    },
+                    "500": {
+                        "description": "Erro no formato ou tipo dos dados enviados."
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            }
+        },
+        "/v1/type": {
+            "get": {
+                "summary": "Paginação para lista de tipos de produtos",
+                "operationId": "App\\Http\\Controllers\\TypeController::getPagination",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "header",
+                        "description": "Página a ser exibida",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "header",
+                        "description": "Quantidade de itens por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "15"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "header",
+                        "description": "Campo para ordenação da pesquisa de clientes",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "id"
+                        },
+                        "example": "cep"
+                    },
+                    {
+                        "name": "order",
+                        "in": "header",
+                        "description": "Ordenação da pesquisa asc ou desc",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "asc",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        },
+                        "example": "asc"
+                    },
+                    {
+                        "name": "ID",
+                        "in": "header",
+                        "description": "Valor para o campo 'ID'.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    },
+                    {
+                        "name": "name",
+                        "in": "header",
+                        "description": "Valor para o campo 'name', pesquisa do tipo 'like'",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Fulado"
+                    },
+                    {
+                        "name": "show_deleted",
+                        "in": "header",
+                        "description": "Exibir (1) ou não (0) os dados deletados",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "0",
+                            "enum": [
+                                "0",
+                                "1"
+                            ]
+                        },
+                        "example": "0"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Uma lista de tipos de produtos com paginação"
+                    },
+                    "406": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "500": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Atualiza um tipo de produto",
+                "operationId": "App\\Http\\Controllers\\TypeController::update",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "header",
+                        "description": "Valor para o campo 'name'",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Pastel"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Novo tipo de produto registrado com sucesso"
+                    },
+                    "406": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Insere um novo tipo de produto",
+                "operationId": "App\\Http\\Controllers\\TypeController::store",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "header",
+                        "description": "Valor para o campo 'name'",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Pastel"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Novo tipo de produto registrado com sucesso"
+                    },
+                    "406": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/v1/type/all": {
+            "get": {
+                "summary": "Exibe todos os registros, exceto deletados",
+                "operationId": "App\\Http\\Controllers\\TypeController::getAll",
+                "responses": {
+                    "200": {
+                        "description": "Lista de tipo de produtos"
+                    },
+                    "500": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/v1/type/{id}": {
+            "get": {
+                "summary": "Exibe um tipo de produto ativo pelo {id}",
+                "operationId": "App\\Http\\Controllers\\TypeController::getById",
+                "parameters": [
+                    {
+                        "name": "show_deleted",
+                        "in": "header",
+                        "description": "{id} do tipo de produto a ser localizado.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "0"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados do tipo de produto solicitado"
+                    },
+                    "500": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Deleta um tipo de produto pelo {id}",
+                "operationId": "App\\Http\\Controllers\\TypeController::destroy",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "header",
+                        "description": "{id} do tipo de produto a ser deletado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mensagem informando que o tipo de produto foi deletado."
                     },
                     "500": {
                         "description": "Erro no formato ou tipo dos dados enviados."

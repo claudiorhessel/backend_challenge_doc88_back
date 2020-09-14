@@ -69,6 +69,16 @@ class ClientController extends Controller
      *     )
      *   ),
      *   @OA\Parameter(
+     *     name="ID",
+     *     description="Valor para o campo 'ID'.",
+     *     in="header",
+     *     required=false,
+     *     example="1",
+     *     @OA\Schema(
+     *       type="integer"
+     *     )
+     *   ),
+     *   @OA\Parameter(
      *     name="name",
      *     description="Valor para o campo 'name', pesquisa do tipo 'like'",
      *     in="header",
@@ -172,7 +182,7 @@ class ClientController extends Controller
      *   ),
      *   @OA\Response(
      *     response=200,
-     *     description="A list with clients"
+     *     description="Uma lista de clientes com paginação"
      *   ),
      *   @OA\Response(
      *     response=406,
@@ -563,16 +573,6 @@ class ClientController extends Controller
      * @OA\put(
      *   path="/v1/client/{id}",
      *   summary="Atualiza os dados do cliente",
-     *   @OA\Parameter(
-     *     name="id",
-     *     description="{id} do cliente a ser atualizado.",
-     *     in="header",
-     *     required=true,
-     *     example="0",
-     *     @OA\Schema(
-     *       type="integer"
-     *     )
-     *   ),
      *   @OA\Parameter(
      *     name="name",
      *     description="Valor para o campo 'name'.",

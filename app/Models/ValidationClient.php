@@ -9,7 +9,7 @@ class ValidationClient
     ];
 
     const RULE_CLIENT_UPDATE = [
-        'id' => 'required|integer',
+        'id' => 'required|integer|exists:types,id',
         'name' => 'required|max:250',
         'email' => 'required|email|unique:clients|max:100',
         'phone' => 'required|max:11|integer',
@@ -51,6 +51,7 @@ class ValidationClient
     const MESSAGE_CLIENT = [
         'id.required' => 'O \'id\' é obrigatório.',
         'id.integer' => 'O \'id\' deve conter apenas números.',
+        'id.exists' => 'O \'id\' informado não existe ou não está ativo.',
         'name.required' => 'O \'name\' é obrigatório.',
         'name.min' => 'Você deve informar ao menos 3 caracteres para o \'name\'.',
         'email.required' => 'O \'email\' é obrigatório.',

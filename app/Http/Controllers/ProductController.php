@@ -608,7 +608,12 @@ class ProductController extends Controller
                                     ->find($id)
                                     ->update($saveData);
 
-                    return response()->json($product, Response::HTTP_CREATED);
+                    return response()->json(
+                        [
+                            'message' => 'Produto atualizado com sucesso.'
+                        ],
+                        Response::HTTP_CREATED
+                    );
                 } else {
                     return response()->json(['error' => 'Erro com a foto.'], Response::HTTP_BAD_REQUEST);
                 }

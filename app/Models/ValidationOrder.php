@@ -31,6 +31,7 @@ class ValidationOrder
     const MESSAGE_ORDER = [
         'id.required' => 'O \'id\' é obrigatório.',
         'id.integer' => 'O \'id\' deve conter apenas números.',
+        'id.exists' => 'O \'id\' informado não existe ou não está ativo.',
         'product_id.integer' => 'O \'product_id\' deve ser um número.',
         'product_name.min' => 'O \'product_name\' deve conter ao menos 3 caracteres.',
         'product_type.min' => 'O \'product_type\' deve conter ao menos 3 caracteres.',

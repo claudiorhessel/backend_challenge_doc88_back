@@ -15,7 +15,7 @@ class ValidationProduct
     ];
 
     const RULE_PRODUCT_UPDATE = [
-        'id' => 'integer',
+        'id' => 'integer|exists:types,id',
         'name' => 'required|max:250',
         'price' => 'required|max:100|regex:/^\d+(\.\d{1,2})?$/',
         'photo' => 'required|image|mimes:jpeg,png,jpg|max:2048'
@@ -35,6 +35,7 @@ class ValidationProduct
     const MESSAGE_PRODUCT = [
         'id.required' => 'O \'id\' é obrigatório.',
         'id.integer' => 'O \'id\' deve conter apenas números.',
+        'id.exists' => 'O \'id\' informado não existe ou não está ativo.',
         'name.required' => 'O \'name\' é obrigatório.',
         'name.min' => 'Você deve informar ao menos 3 caracteres para o \'name\'.',
         'price.required' => 'O \'email\' é obrigatório.',
