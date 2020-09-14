@@ -44,10 +44,10 @@ class Client extends Model
 
     protected $casts = [
         'id',
-        'birth_date'=>'Timestamp',
-        'updated_at'=>'Timestamp',
-        'deleted_at'=>'Timestamp',
-        'created_at'=>'Timestamp'
+        'birth_date'=>'date:Y-m-d',
+        'updated_at'=>'datetime:Y-m-d H:i:s',
+        'deleted_at'=>'datetime:Y-m-d H:i:s',
+        'created_at'=>'datetime:Y-m-d H:i:s'
     ];
 
     protected $dates = [

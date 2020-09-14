@@ -15,8 +15,15 @@ $router->get('/', function () use ($router) {
     return $router->app->version();
 });
 
+$router->get('/api/v1/', function () use ($router) {
+    $path = rtrim(app()->basePath('public/swagger.json'));
+    $json = json_decode(file_get_contents($path), true);
+    return response()->json($json);
+});
+
 $router->group(['prefix' => '/api/v1/client'], function() use ($router) {
-    $router->get('/', "ClientController@getAll");
+    $router->get('/', "ClientController@getPagination");
+    $router->get('/all', "ClientController@getAll");
     $router->get('/{id}', "ClientController@getById");
     $router->post('/', "ClientController@store");
     $router->put('/{id}', "ClientController@update");
@@ -24,7 +31,8 @@ $router->group(['prefix' => '/api/v1/client'], function() use ($router) {
 });
 
 $router->group(['prefix' => '/api/v1/product'], function() use ($router) {
-    $router->get('/', "ProductController@getAll");
+    $router->get('/', "ProductController@getPagination");
+    $router->get('/all', "ProductController@getAll");
     $router->get('/{id}', "ProductController@get");
     $router->post('/', "ProductController@store");
     $router->put('/{id}', "ProductController@update");
@@ -32,7 +40,8 @@ $router->group(['prefix' => '/api/v1/product'], function() use ($router) {
 });
 
 $router->group(['prefix' => '/api/v1/type'], function() use ($router) {
-    $router->get('/', "TypeController@getAll");
+    $router->get('/', "TypeController@getPagination");
+    $router->get('/all', "TypeController@getAll");
     $router->get('/{id}', "TypeController@get");
     $router->post('/', "TypeController@store");
     $router->put('/{id}', "TypeController@update");
@@ -40,7 +49,8 @@ $router->group(['prefix' => '/api/v1/type'], function() use ($router) {
 });
 
 $router->group(['prefix' => '/api/v1/order'], function() use ($router) {
-    $router->get('/', "OrderController@getAll");
+    $router->get('/', "OrderController@getPagination");
+    $router->get('/all', "OrderController@getAll");
     $router->get('/{id}', "OrderController@get");
     $router->post('/', "OrderController@store");
     $router->put('/{id}', "OrderController@update");

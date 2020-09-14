@@ -1,0 +1,461 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Api backend_challeng_doc88_back",
+        "version": "0.1"
+    },
+    "paths": {
+        "/v1/client": {
+            "get": {
+                "summary": "Paginação para lista de clientes",
+                "operationId": "App\\Http\\Controllers\\ClientController::getPagination",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "header",
+                        "description": "Página a ser exibida",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "1"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "header",
+                        "description": "Quantidade de itens por página",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "15"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "order_by",
+                        "in": "header",
+                        "description": "Campo para ordenação da pesquisa de clientes",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "id"
+                        },
+                        "example": "cep"
+                    },
+                    {
+                        "name": "order",
+                        "in": "header",
+                        "description": "Ordenação da pesquisa asc ou desc",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "asc",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        },
+                        "example": "asc"
+                    },
+                    {
+                        "name": "name",
+                        "in": "header",
+                        "description": "Valor para o campo 'name', pesquisa do tipo 'like'",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Fulado"
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "description": "Valor para o campo 'email', pesquisa do tipo 'like'",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "teste@teste.com"
+                    },
+                    {
+                        "name": "address",
+                        "in": "header",
+                        "description": "Valor para o campo 'address', pesquisa do tipo 'like'",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Rua dos Tolos"
+                    },
+                    {
+                        "name": "complement",
+                        "in": "header",
+                        "description": "Valor para o campo 'complement', pesquisa do tipo 'like'",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Ap 25"
+                    },
+                    {
+                        "name": "complement",
+                        "in": "header",
+                        "description": "Valor para o campo 'neighborhood' (bairro), pesquisa do tipo 'like'",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Berrini"
+                    },
+                    {
+                        "name": "phone",
+                        "in": "header",
+                        "description": "Valor para o campo 'phone', pesquisa do tipo 'like'",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "2345678"
+                    },
+                    {
+                        "name": "cep",
+                        "in": "header",
+                        "description": "Valor para o campo 'cep', pesquisa do tipo 'like'",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "00000001"
+                    },
+                    {
+                        "name": "birth_date_start",
+                        "in": "header",
+                        "description": "Valor para o campo 'birth_date', pesquisa a partir desta data",
+                        "required": false,
+                        "schema": {
+                            "type": "date"
+                        },
+                        "example": "1993-09-22"
+                    },
+                    {
+                        "name": "birth_date_end",
+                        "in": "header",
+                        "description": "Valor para o campo 'birth_date', pesquisa até esta data",
+                        "required": false,
+                        "schema": {
+                            "type": "date"
+                        },
+                        "example": "1993-09-22"
+                    },
+                    {
+                        "name": "show_deleted",
+                        "in": "header",
+                        "description": "Exibir (1) ou não (0) os dados deletados",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": "0",
+                            "enum": [
+                                "0",
+                                "1"
+                            ]
+                        },
+                        "example": "0"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list with clients"
+                    },
+                    "406": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "500": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "post": {
+                "summary": "Insere um novo cliente",
+                "operationId": "App\\Http\\Controllers\\ClientController::store",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "header",
+                        "description": "Valor para o campo 'name'",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Fulado"
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "description": "Valor para o campo 'email'",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "teste@teste.com"
+                    },
+                    {
+                        "name": "address",
+                        "in": "header",
+                        "description": "Valor para o campo 'address'",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Rua dos Tolos"
+                    },
+                    {
+                        "name": "complement",
+                        "in": "header",
+                        "description": "Valor para o campo 'complement'",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Ap 25"
+                    },
+                    {
+                        "name": "complement",
+                        "in": "header",
+                        "description": "Valor para o campo 'neighborhood' (bairro)",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Berrini"
+                    },
+                    {
+                        "name": "phone",
+                        "in": "header",
+                        "description": "Valor para o campo 'phone'",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "2345678"
+                    },
+                    {
+                        "name": "cep",
+                        "in": "header",
+                        "description": "Valor para o campo 'cep'",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "00000001"
+                    },
+                    {
+                        "name": "birth_date",
+                        "in": "header",
+                        "description": "Valor para o campo 'birth_date'",
+                        "required": true,
+                        "schema": {
+                            "type": "date"
+                        },
+                        "example": "1993-09-22"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Novo cliente registrado com sucesso"
+                    },
+                    "406": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/v1/client/all": {
+            "get": {
+                "summary": "Exibe todos os registros, exceto deletados",
+                "operationId": "App\\Http\\Controllers\\ClientController::getAll",
+                "responses": {
+                    "200": {
+                        "description": "Lista de clientes"
+                    },
+                    "500": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            }
+        },
+        "/v1/client/{id}": {
+            "get": {
+                "summary": "Exibe um cliente ativo pelo {id}",
+                "operationId": "App\\Http\\Controllers\\ClientController::getById",
+                "parameters": [
+                    {
+                        "name": "show_deleted",
+                        "in": "header",
+                        "description": "{id} do cliente a ser localizado.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "0"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados do cliente solicitado"
+                    },
+                    "500": {
+                        "description": "Erro no formato ou tipo dos dados enviados"
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor"
+                    }
+                }
+            },
+            "put": {
+                "summary": "Atualiza os dados do cliente",
+                "operationId": "App\\Http\\Controllers\\ClientController::update",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "header",
+                        "description": "{id} do cliente a ser atualizado.",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "0"
+                    },
+                    {
+                        "name": "name",
+                        "in": "header",
+                        "description": "Valor para o campo 'name'.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Fulado"
+                    },
+                    {
+                        "name": "email",
+                        "in": "header",
+                        "description": "Valor para o campo 'email'.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "teste@teste.com"
+                    },
+                    {
+                        "name": "address",
+                        "in": "header",
+                        "description": "Valor para o campo 'address'.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Rua dos Tolos"
+                    },
+                    {
+                        "name": "complement",
+                        "in": "header",
+                        "description": "Valor para o campo 'complement'.",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Ap 25"
+                    },
+                    {
+                        "name": "complement",
+                        "in": "header",
+                        "description": "Valor para o campo 'neighborhood' (bairro).",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Berrini"
+                    },
+                    {
+                        "name": "phone",
+                        "in": "header",
+                        "description": "Valor para o campo 'phone'.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "2345678"
+                    },
+                    {
+                        "name": "cep",
+                        "in": "header",
+                        "description": "Valor para o campo 'cep'.",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "00000001"
+                    },
+                    {
+                        "name": "birth_date",
+                        "in": "header",
+                        "description": "Valor para o campo 'birth_date'.",
+                        "required": false,
+                        "schema": {
+                            "type": "date"
+                        },
+                        "example": "1993-09-22"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados do cliente atualizado."
+                    },
+                    "406": {
+                        "description": "Erro no formato ou tipo dos dados enviados."
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete um cliente pelo {id}",
+                "operationId": "App\\Http\\Controllers\\ClientController::destroy",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "header",
+                        "description": "{id} do cliente a ser deletado",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": "1"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Mensagem informando que o cliente foi deletado."
+                    },
+                    "500": {
+                        "description": "Erro no formato ou tipo dos dados enviados."
+                    },
+                    "default": {
+                        "description": "Erro interno do servidor."
+                    }
+                }
+            }
+        }
+    }
+}
