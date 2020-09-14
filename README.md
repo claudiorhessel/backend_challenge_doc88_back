@@ -109,6 +109,10 @@ Tratamento para rotas inexistentes
 
 public/swagger.json
 
+## Arquivo para importar e testar rotas no Insomnia
+
+public/Insomnia_2020-09-14.json
+
 ## Atualizar documentação da API
 
 .\vendor\bin\openapi app -o .\public\swagger.json
